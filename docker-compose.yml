@@ -1,0 +1,37 @@
+# Copyright VMware, Inc.
+# SPDX-License-Identifier: APACHE-2.0
+
+version: '2.1'
+
+services:
+  mysql:
+    image: docker.io/bitnami/mysql:8.0
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'mysql_data:/bitnami/mysql/data'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MYSQL_USER=magento
+      - MYSQL_ROOT_PASSWORD=magento
+      - MYSQL_PASSWORD=magento
+      - MYSQL_DATABASE=magento
+    healthcheck:
+      test: ['CMD', '/opt/bitnami/scripts/mysql/healthcheck.sh']
+      interval: 15s
+      timeout: 5s
+      retries: 6
+  opensearch:
+    image: docker.io/bitnami/opensearch:2
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    volumes:
+      - 'opensearch_data:/bitnami/opensearch/data'
+
+volumes:
+  mysql_data:
+    driver: local
+  opensearch_data:
+    driver: local
+
